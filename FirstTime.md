@@ -46,31 +46,32 @@ Windows 版的 Git：
 
 菜单流程：  
 
-　Run/Edit Configurations/+/Mave  
+　Run/Edit Configurations/+/Maven  
 
 ***疑问：*** *为什么不使用 IDEA 自带的 Maven？*
 ```bash
-配置一些 IDEA-Maven 没有的特殊的作用，即创建 Maven 的 clean-install 组合来编译代码。
+配置一些 IDEA-Maven 没有的特殊的作用，即创建 Maven 的 clean-install 组合来编译打包项目代码。
 ```
 ***疑问：*** *clean 和 install 有什么用？*
 ```bash
 clean：让 Maven 清理 target 目录，因为 Maven 默认项目的输出目录为 target。
-install：执行 resource 任务，任务为在 Run->Edit Config 中配置的项目路径资源- Working Directory。
+install：将本地工程打包，放入到Maven本地仓库中。
 ```
 　***－疑问：*** *为什么清理 target 目录？ target 目录有什么用？*
 ```bash  
-　------------
+target 目录存放编译后的项目文件，比如 .class 等等。如果不清理 target 目录，下一步使用 install 时，不会重新编译整个工
+程，而是直接将原有编译好的工程打包并安装到 Maven 本地仓库。试想，如果此时修改了源文件，但并未编译就被打包安装到 Maven 
+本地仓库，那么修改的代码则不会生效。
 ```
 　***－疑问：*** *为什么执行 install？*
 ```bash
-　-----------
+Maven 在执行一个生命周期的命令时，将会执行之前的所有生命周期操作。所以，执行 install，会执行前面一系列的动作，包括 
+compile，package，test 等，此时，Maven 本地仓库会得到重新编译后的新的工程，以方便其他 Moudle 通过 pom.xml 配置的依
+赖引入最新工程代码。
 ```
-　－clean-install 流程是：  
-　　首先执行 clean，然后 install，最后编译项目。  
-  
 ***疑问：*** *为什么 IDEA-Maven 的 Maven 命令组合不好？*
 ```bash
---------
+IDEA-Maven 没有自带的 Maven 命令组合，只有单个命令，虽然每次都可以选择单个命令组合使用，但是使用起来不方便。
 ```
 
 ***注意：*** *每个项目都默认使用 IDEA 自带 Maven，每个都需要手动设置 Maven。*    
